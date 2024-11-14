@@ -38,10 +38,10 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	assign clock = clk_50mhz;
 	wire clk_50mhz;
 	wire locked;
-	clk_wiz_0 pll(.clk_out1(clk_50mhz), .reset(1'b0), locked(locked), .clk_in1(clk_100mhz));
+	clk_wiz_0 pll(.clk_out1(clk_50mhz), .reset(1'b0), .locked(locked), .clk_in1(clk_100mhz));
 
 	// ADD YOUR MEMORY FILE HERE
-	localparam INSTR_FILE = "simon";
+	localparam INSTR_FILE = "mem_edge";
 	
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 
@@ -80,16 +80,16 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 
 	// send a pulse into reset... 
 	// if lw to address 5, then assign memDataOut to random_num
-	assign memDataOut = (memAddr[11:0] == 12'd5) ? random_num : memDataOut_normal
-	lfsr random_reg(.clk(clock), .reset(start_random_pulse), .random_num(random_num));
+	assign memDataOut = (memAddr[11:0] == 12'd5) ? random_num : memDataOut_normal;
 	wire start_random_pulse;
+	lfsr random_reg(.clk(clock), .reset(start_random_pulse), .random_num(random_num));
 	// Creates a pulse that goes high for one cycle when reset, then stays 0 
     dffe_ref pulse_stall(.q(start_random_pulse), .d(reset), .clk(clock), .en(1'b1), .clr(1'b0));
 
 	// if sw to address 6, flash the led 
 	assign flash_led = (mwe == 1'b1) & (memAddr[11:0] == 12'd6);
 	// memDataIn[1:0] cases: 00=flash red, 01=flash blue, 10=flash green, 11=flash yellow
-	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .flash_led(flash_led), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
+	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
 
 
 endmodule
