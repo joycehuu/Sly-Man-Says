@@ -24,24 +24,40 @@
  *
  **/
 
-module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button, 
-		output red_led, output blue_led, output green_led, output yellow_led, input reset);
-	wire clock;
-
+module Wrapper (
+    input clk_100mhz,
+    input BTNU, 
+    input [15:0] SW,
+    output reg [15:0] LED);
+    wire clock, reset;
+    assign clock = clk_100mhz;
+    assign reset = BTNU; 
 	wire rwe, mwe;
 	wire[4:0] rd, rs1, rs2;
 	wire[31:0] instAddr, instData, 
 		rData, regA, regB,
-		memAddr, memDataIn, memDataOut, memDataOut_normal;
-	wire[31:0] random_num;
-
-	assign clock = clk_50mhz;
-	wire clk_50mhz;
-	wire locked;
-	clk_wiz_0 pll(.clk_out1(clk_50mhz), .reset(1'b0), locked(locked), .clk_in1(clk_100mhz));
-
+		memAddr, memDataIn, memDataOut, q_dmem, data;
+    reg [15:0] SW_Q, SW_M;  
+    
+    wire io_read, io_write;
+    
+    assign io_read = (memAddr == 32'd4096) ? 1'b1: 1'b0;
+    assign io_write = (memAddr == 32'd4097) ? 1'b1: 1'b0;
+     always @(negedge clock) begin
+           SW_M <= SW;
+           SW_Q <= SW_M; 
+       end
+       
+       always @(posedge clock) begin
+           if (io_write == 1'b1) begin
+               LED <= memDataIn[15:0];
+           end else begin
+               LED <= LED;
+           end
+       end
+    assign q_dmem = (io_read == 1'b1) ? SW_Q : memDataOut;
 	// ADD YOUR MEMORY FILE HERE
-	localparam INSTR_FILE = "simon";
+	localparam INSTR_FILE = "timing";
 	
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 
@@ -56,7 +72,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 									
 		// RAM
 		.wren(mwe), .address_dmem(memAddr), 
-		.data(memDataIn), .q_dmem(memDataOut)); 
+		.data(memDataIn), .q_dmem(q_dmem)); 
 	
 	// Instruction Memory (ROM)
 	ROM #(.MEMFILE({INSTR_FILE, ".mem"}))
@@ -76,20 +92,8 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 		.wEn(mwe), 
 		.addr(memAddr[11:0]), 
 		.dataIn(memDataIn), 
-		.dataOut(memDataOut_normal));
-
-	// send a pulse into reset... 
-	// if lw to address 5, then assign memDataOut to random_num
-	assign memDataOut = (memAddr[11:0] == 12'd5) ? random_num : memDataOut_normal
-	lfsr random_reg(.clk(clock), .reset(start_random_pulse), .random_num(random_num));
-	wire start_random_pulse;
-	// Creates a pulse that goes high for one cycle when reset, then stays 0 
-    dffe_ref pulse_stall(.q(start_random_pulse), .d(reset), .clk(clock), .en(1'b1), .clr(1'b0));
-
-	// if sw to address 6, flash the led 
-	assign flash_led = (mwe == 1'b1) & (memAddr[11:0] == 12'd6);
-	// memDataIn[1:0] cases: 00=flash red, 01=flash blue, 10=flash green, 11=flash yellow
-	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .flash_led(flash_led), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
-
+		.dataOut(memDataOut));
+		
+	
 
 endmodule
