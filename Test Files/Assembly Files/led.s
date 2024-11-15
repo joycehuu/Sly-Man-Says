@@ -11,7 +11,7 @@ sw $r3, 0($r20)
 # flash new LED (turn on and then delay and then turn off)
 sw $r7, 6($r0)
 addi $r21, $r0, 1
-addi $r22, $r0, 50000000
+sll $r22, $r21, 
 
 _led_loop1:
 blt $r22, $r21, _turnoff_led

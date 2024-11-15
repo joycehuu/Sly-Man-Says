@@ -6,7 +6,7 @@ module lfsr(clk, reset, random_num);
 
     assign seed = 32'hB4BCD35C;
     assign shift_d[31:1] = Qout[30:0];
-    assign shift_d[0] = Qout[31] ^ Qout[19] ^ Q[3]; // xor random bits
+    assign shift_d[0] = Qout[31] ^ Qout[19] ^ Qout[3]; // xor random bits
     assign Din = reset ? seed : shift_d;
     assign random_num = Qout;
 

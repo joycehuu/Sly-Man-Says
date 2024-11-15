@@ -112,7 +112,16 @@ module Wrapper_tb #(parameter FILE = "mem_edge");
 		.wEn(mwe), 
 		.addr(memAddr[11:0]), 
 		.dataIn(memDataIn), 
-		.dataOut(memDataOut));
+		.dataOut(memDataOut_normal));
+	
+	// send a pulse into reset... 
+	// if lw to address 5, then assign memDataOut to random_num
+	wire[31:0] random_num;
+	assign memDataOut = (memAddr[11:0] == 12'd5) ? random_num : memDataOut_normal;
+	wire start_random_pulse;
+	lfsr random_reg(.clk(clock), .reset(start_random_pulse), .random_num(random_num));
+	// Creates a pulse that goes high for one cycle when reset, then stays 0 
+    dffe_ref pulse_stall(.q(start_random_pulse), .d(reset), .clk(clock), .en(1'b1), .clr(1'b0));
 
 	// Create the clock
 	always
