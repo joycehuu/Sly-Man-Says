@@ -32,7 +32,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	wire[4:0] rd, rs1, rs2;
 	wire[31:0] instAddr, instData, 
 		rData, regA, regB,
-		memAddr, memDataIn, memDataOut, memDataOut_normal;
+		memAddr, memDataIn, memDataOut, memDataOut_normal, memData_temp1;
 	wire[31:0] random_num;
 
 	assign clock = clk_50mhz;
@@ -80,7 +80,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 
 	// send a pulse into reset... 
 	// if lw to address 5, then assign memDataOut to random_num
-	assign memDataOut = (memAddr[11:0] == 12'd5) ? random_num : memDataOut_normal;
+	assign memData_temp1 = (memAddr[11:0] == 12'd5) ? random_num : memDataOut_normal;
 	wire start_random_pulse;
 	lfsr random_reg(.clk(clock), .reset(start_random_pulse), .random_num(random_num));
 	// Creates a pulse that goes high for one cycle when reset, then stays 0 
@@ -91,5 +91,15 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	// memDataIn[1:0] cases: 00=flash red, 01=flash blue, 10=flash green, 11=flash yellow
 	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
 
+	wire [31:0] button_out;
+	// if lw to address 7, calling check_buttons
+	assign memDataOut = (memAddr[11:0] == 12'd7) ? button_pressed : memData_temp1;
+	// only assign memdataout to the actual color, and only if there was 
+	button_press press(red_button, yellow_button, blue_button, green_button, clock, button_out);
+
+	// TO DO: in mips, write thing that checks button presses, and turns on the led w button press
+	// in mips -> I will just shift the number myself to only get the two lsb (colors) or msb however i code this
+	// in verilog -> writing button_press 
+	// check if lw called -> then turn was_read = 1, 
 
 endmodule
