@@ -24,7 +24,7 @@
  *
  **/
 
-module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button, 
+module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button,
 		output red_led, output blue_led, output green_led, output yellow_led, input reset);
 	wire clock;
 
@@ -87,7 +87,6 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
     dffe_ref pulse_stall(.q(start_random_pulse), .d(reset), .clk(clock), .en(1'b1), .clr(1'b0));
 
 	// if sw to address 6, flash the led 
-	wire flash_led;
 	assign flash_led = (mwe == 1'b1) & (memAddr[11:0] == 12'd6);
 	// memDataIn[1:0] cases: 00=flash red, 01=flash blue, 10=flash green, 11=flash yellow
 	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
