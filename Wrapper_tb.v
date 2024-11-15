@@ -33,7 +33,7 @@
  *
  **/
 
-module Wrapper_tb #(parameter FILE = "led");
+module Wrapper_tb #(parameter FILE = "button");
 
 	// FileData
 	localparam DIR = "Test Files/";
