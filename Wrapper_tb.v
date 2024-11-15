@@ -33,7 +33,7 @@
  *
  **/
 
-module Wrapper_tb #(parameter FILE = "mem_edge");
+module Wrapper_tb #(parameter FILE = "led");
 
 	// FileData
 	localparam DIR = "Test Files/";
@@ -58,6 +58,7 @@ module Wrapper_tb #(parameter FILE = "mem_edge");
 	reg[9:0] num_cycles = DEFAULT_CYCLES;
 	reg[15*8:0] exp_text;
 	reg null;
+	wire [31:0] memDataOut_normal;
 
 	// Connect the reg to test to the for loop
 	assign rs1_test = reg_to_test;
@@ -122,6 +123,13 @@ module Wrapper_tb #(parameter FILE = "mem_edge");
 	lfsr random_reg(.clk(clock), .reset(start_random_pulse), .random_num(random_num));
 	// Creates a pulse that goes high for one cycle when reset, then stays 0 
     dffe_ref pulse_stall(.q(start_random_pulse), .d(reset), .clk(clock), .en(1'b1), .clr(1'b0));
+
+	// if sw to address 6, flash the led 
+	wire flash_led;
+	wire red_led, blue_led, green_led, yellow_led;
+	assign flash_led = (mwe == 1'b1) & (memAddr[11:0] == 12'd6);
+	// memDataIn[1:0] cases: 00=flash red, 01=flash blue, 10=flash green, 11=flash yellow
+	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
 
 	// Create the clock
 	always
