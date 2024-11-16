@@ -33,7 +33,7 @@
  *
  **/
 
-module Wrapper_tb #(parameter FILE = "testing_combine");
+module Wrapper_tb #(parameter FILE = "flashing_lights");
 
 	// FileData
 	localparam DIR = "Test Files/";
