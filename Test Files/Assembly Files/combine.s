@@ -77,7 +77,7 @@ check_buttons:
         # otherwise user got it correct, move on to next color
         addi $s0, $s0, 1
         # keep waiting for button press if we haven't reached end of sequence
-        bne $s0, $s2 _wait_button_press
+        blt $s0, $s2 _wait_button_press
         j _correct_color
     
     _correct_color:
