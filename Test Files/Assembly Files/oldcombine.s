@@ -27,16 +27,10 @@ _led_sequence:
     _exit_led_loop:
         # increment the next empty space in the sequence
         addi $s0, $s0, 1
-        jal check_buttons
-        # $v0 != 0 means user didn't mess up and should keep continuing the sequence
-        bne $v0, $r0, _led_sequence
-        # otherwise user messed up, jump to end game
-        j _end_game
-    
-_end_game:
+        # jal check_buttons
+        j _led_sequence
 
-check_buttons:
-    # returns $v0 = 0 if user mes
+# check_buttons:
 
 
 # flashes an LED 
@@ -48,9 +42,9 @@ flash_led:
     # flash new LED (turn on and then delay and then turn off)
     sw $t5, 6($r0)
 
-    # $t6 = 1, $t7 = 2^20
+    # $t6 = 1, $t7 = 2^19
     addi $t6, $r0, 1
-    sll $t7, $t6, 20
+    sll $t7, $t6, 19
     # loop until $r21 >= $r22, $r21++ at end of loop
     # basically delay/keep LED on for one second
     _led_loop1:
