@@ -33,7 +33,7 @@ _led_sequence:
         # $v0 != 0 means user messed up and end game
         bne $v0, $r0, _end_game
         # otherwise keep continuing the sequence
-        j _end_game
+        j _led_sequence
 
 _end_game:
     nop
@@ -120,4 +120,4 @@ flash_led:
     # turn led off
     addi $t5, $t5, -1
     sw $t5, 6($r0)
-    jr $r31
+    jr $ra
