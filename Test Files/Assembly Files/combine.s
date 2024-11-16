@@ -2,6 +2,7 @@ main_loop:
 
 # sequence starts at address 20, $s0 = the next empty space in memory where new color should be stored
 addi $s0, $r0, 20
+addi $sp, $sp, 10000
 
 _led_sequence:
     # get random num
@@ -27,17 +28,70 @@ _led_sequence:
     _exit_led_loop:
         # increment the next empty space in the sequence
         addi $s0, $s0, 1
+        addi $a0, $s0, 0
         jal check_buttons
-        # $v0 != 0 means user didn't mess up and should keep continuing the sequence
-        bne $v0, $r0, _led_sequence
-        # otherwise user messed up, jump to end game
+        # $v0 != 0 means user messed up and end game
+        bne $v0, $r0, _end_game
+        # otherwise keep continuing the sequence
         j _end_game
-    
+
 _end_game:
+    nop
+    nop
+    j _end_game
 
 check_buttons:
-    # returns $v0 = 0 if user mes
+    # passed into the argument register is where the end of the sequence is in memory
+    # returns 1 if user messed up and end game
+    # returns 0 if user got all right
+    addi $sp, $sp, -3
+    sw $s0, 0($sp)
+    sw $s1, 1($sp)
+    sw $s2, 2($sp)
 
+    # $s0 = where we are in the sequence
+    # $s2 = end of sequence
+    addi $s0, $r0, 20
+    addi $s2, $a0, 0
+
+    # Check that user pressed a button
+    _wait_button_press:
+        lw $t4, 7($r0)
+        addi $t1, $r0, 1
+        # getting the lsb and seeing if button pressed, 0 = no button press, 1 = pressed
+        and $t3, $t1, $t4
+        bne $t3, $r0, _check_correct_button
+        # otherwise if lsb = 0, no button was pressed so keep waiting/looping
+        j _wait_button_press
+
+    _check_correct_button:
+        addi $t1, $r0, 6
+        # $s1 = the color of button pressed
+        and $s1, $t1, $t4
+        addi $a0, $s1, 0
+        jal flash_led
+        # loading in the color of sequence
+        lw $t5, 0($s0)
+        bne $t5, $s1, _wrong_color
+        # otherwise user got it correct, move on to next color
+        addi $s0, $s0, 1
+        # keep waiting for button press if we haven't reached end of sequence
+        bne $s0, $s2 _wait_button_press
+        j _correct_color
+    
+    _correct_color:
+        addi $v0, $r0, 0
+        j _clean_check_buttons
+
+    _wrong_color:
+        addi $v0, $r0, 1
+
+    _clean_check_buttons:
+        lw $s0, 0($sp)
+        lw $s1, 1($sp)
+        lw $s2, 2($sp)
+        addi $sp, $sp, 3
+        jr $ra
 
 # flashes an LED 
 flash_led:
