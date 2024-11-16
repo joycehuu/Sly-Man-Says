@@ -93,10 +93,12 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
 
 	wire [31:0] button_out;
+	wire poll_button;
 	// if lw to address 7, calling check_buttons
+	assign poll_button = (memAddr[11:0] == 12'd7);
 	assign memDataOut = (memAddr[11:0] == 12'd7) ? button_out : memData_temp1;
 	// only assign memdataout to the actual color, and only if there was a button press?
-	button_press press(red_button, yellow_button, blue_button, green_button, clock, button_out);
+	button_press press(red_button, yellow_button, blue_button, green_button, clock, poll_button, button_out);
 
 	// TO DO: in mips, write thing that checks button presses, and turns on the led w button press
 	// in mips -> I will just shift the number myself to only get the two lsb (colors) or msb however i code this
