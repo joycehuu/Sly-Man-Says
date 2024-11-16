@@ -1,0 +1,83 @@
+Cycle   4: Wrote 20 into register 16
+Cycle   5: Wrote 2543479702 into register 8
+Cycle   6: Wrote 3 into register 9
+Cycle   7: Wrote 2 into register 10
+Cycle   9: Wrote 20 into register 17
+Cycle  11: Wrote 2 into register 4
+Cycle  12: Wrote 9 into register 31
+Cycle  15: Wrote 4 into register 13
+Cycle  16: Wrote 5 into register 13
+Cycle  18: Wrote 1 into register 14
+Cycle  19: Wrote 1048576 into register 15
+Cycle  24: Wrote 2 into register 14
+Cycle  30: Wrote 3 into register 14
+Cycle  36: Wrote 4 into register 14
+Cycle  42: Wrote 5 into register 14
+Cycle  48: Wrote 6 into register 14
+Cycle  54: Wrote 7 into register 14
+Cycle  60: Wrote 8 into register 14
+Cycle  66: Wrote 9 into register 14
+Cycle  72: Wrote 10 into register 14
+Cycle  78: Wrote 11 into register 14
+Cycle  84: Wrote 12 into register 14
+Cycle  90: Wrote 13 into register 14
+Cycle  96: Wrote 14 into register 14
+Cycle 102: Wrote 15 into register 14
+Cycle 108: Wrote 16 into register 14
+Cycle 114: Wrote 17 into register 14
+Cycle 120: Wrote 18 into register 14
+Cycle 126: Wrote 19 into register 14
+Cycle 132: Wrote 20 into register 14
+Cycle 138: Wrote 21 into register 14
+Cycle 144: Wrote 22 into register 14
+Cycle 150: Wrote 23 into register 14
+Cycle 156: Wrote 24 into register 14
+Cycle 162: Wrote 25 into register 14
+Cycle 168: Wrote 26 into register 14
+Cycle 174: Wrote 27 into register 14
+Cycle 180: Wrote 28 into register 14
+Cycle 186: Wrote 29 into register 14
+Cycle 192: Wrote 30 into register 14
+Cycle 198: Wrote 31 into register 14
+Cycle 204: Wrote 32 into register 14
+Cycle 210: Wrote 33 into register 14
+Cycle 216: Wrote 34 into register 14
+Cycle 222: Wrote 35 into register 14
+Cycle 228: Wrote 36 into register 14
+Cycle 234: Wrote 37 into register 14
+Cycle 240: Wrote 38 into register 14
+Cycle 246: Wrote 39 into register 14
+Cycle 252: Wrote 40 into register 14
+============== Testing Mode ==============
+Reg  0:           0
+Reg  1:           0
+Reg  2:           0
+Reg  3:           0
+Reg  4:           2
+Reg  5:           0
+Reg  6:           0
+Reg  7:           0
+Reg  8:  2543479702
+Reg  9:           3
+Reg 10:           2
+Reg 11:           0
+Reg 12:           0
+Reg 13:           5
+Reg 14:          40
+Reg 15:     1048576
+Reg 16:          20
+Reg 17:          20
+Reg 18:           0
+Reg 19:           0
+Reg 20:           0
+Reg 21:           0
+Reg 22:           0
+Reg 23:           0
+Reg 24:           0
+Reg 25:           0
+Reg 26:           0
+Reg 27:           0
+Reg 28:           0
+Reg 29:           0
+Reg 30:           0
+Reg 31:           9

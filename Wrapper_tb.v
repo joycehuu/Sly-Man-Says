@@ -33,7 +33,7 @@
  *
  **/
 
-module Wrapper_tb #(parameter FILE = "button");
+module Wrapper_tb #(parameter FILE = "combine");
 
 	// FileData
 	localparam DIR = "Test Files/";
