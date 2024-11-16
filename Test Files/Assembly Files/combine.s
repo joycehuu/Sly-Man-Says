@@ -44,10 +44,11 @@ check_buttons:
     # passed into the argument register is where the end of the sequence is in memory
     # returns 1 if user messed up and end game
     # returns 0 if user got all right
-    addi $sp, $sp, -3
+    addi $sp, $sp, -4
     sw $s0, 0($sp)
     sw $s1, 1($sp)
     sw $s2, 2($sp)
+    sw $ra, 3($sp)
 
     # $s0 = where we are in the sequence
     # $s2 = end of sequence
@@ -91,7 +92,8 @@ check_buttons:
         lw $s0, 0($sp)
         lw $s1, 1($sp)
         lw $s2, 2($sp)
-        addi $sp, $sp, 3
+        lw $ra, 3($sp)
+        addi $sp, $sp, 4
         jr $ra
 
 # flashes an LED 
