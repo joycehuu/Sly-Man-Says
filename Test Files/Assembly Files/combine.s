@@ -68,6 +68,7 @@ check_buttons:
         addi $t1, $r0, 6
         # $s1 = the color of button pressed
         and $s1, $t1, $t4
+        sra $s1, $s1, 1
         addi $a0, $s1, 0
         jal flash_led
         # loading in the color of sequence
