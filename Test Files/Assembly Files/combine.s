@@ -22,6 +22,7 @@ _led_sequence:
         jal flash_led
         # increment to next color in sequence
         addi $s1, $s1, 1
+        j _loop_led_flash
 
     _exit_led_loop:
         # increment the next empty space in the sequence
@@ -58,4 +59,4 @@ flash_led:
     # turn led off
     addi $t5, $t5, -1
     sw $t5, 6($r0)
-    jr $ra
+    jr $r31
