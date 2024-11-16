@@ -33,7 +33,7 @@
  *
  **/
 
-module Wrapper_tb #(parameter FILE = "combine");
+module Wrapper_tb #(parameter FILE = "testing_combine");
 
 	// FileData
 	localparam DIR = "Test Files/";
