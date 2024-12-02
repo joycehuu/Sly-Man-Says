@@ -22,15 +22,15 @@ module button_press(input red_button, input yellow_button, input blue_button, in
     end
     assign button_temp1[31:3] = 29'd0; 
     assign button_temp1[2:0] = button_pressed;
-
+    assign button_out = button_temp1;
     // putting a delay so the button presses don't get reread
     // i also added one in the software so unsure if I need this
-    assign button_out = (counter < 100000000) & (!first_cycle) ? 32'd0 : button_temp1;
-    always @(posedge clock) begin
-        if (poll_button == 1 && counter >= 100000000)
-            counter <= 1;
-        else if(counter > 0)
-            counter <= counter + 1;
-    end 
+//    assign button_out = (counter < 100000000) & (!first_cycle) ? 32'd0 : button_temp1;
+//    always @(posedge clock) begin
+//        if (poll_button == 1 && counter >= 100000000)
+//            counter <= 1;
+//        else if(counter > 0)
+//            counter <= counter + 1;
+//    end 
 
 endmodule
