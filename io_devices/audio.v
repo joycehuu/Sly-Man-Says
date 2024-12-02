@@ -17,7 +17,7 @@ module audio(clock, play_audio, color, on_off, audioEn, audioOut);
     localparam MHz = 1000000;
 	localparam SYSTEM_FREQ = 100*MHz; // System clock frequency
  
-	assign audioEn = 1'b1;  // Enable Audio Output
+	assign audioEn = onoff_reg;  // Enable Audio Output
 
 	// Initialize the frequency array. FREQs[0] = 261
 	reg[10:0] FREQs[0:3];
