@@ -1,3 +1,11 @@
+# r10 = user score
+# start of sequence stored in address 20 in memory
+
+# IO Addresses:
+# lw to address 5 = get random number
+# sw to address 6 = flash LED 
+# lw to address 7 = check for button presses
+
 main_loop:
 
 # sequence starts at address 20, $s0 = the next empty space in memory where new color should be stored
