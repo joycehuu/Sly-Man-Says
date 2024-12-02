@@ -30,7 +30,7 @@ module audio(clock, play_audio, color, on_off, audioEn, audioOut);
 
 	reg clk1MHz = 0;
 	reg[17:0] counter = 0;
-	always @(posedge clk) begin
+	always @(posedge clock) begin
 		if(counter < CounterLimit)
 			counter <= counter + 1;
 		else begin
