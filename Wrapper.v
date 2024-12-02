@@ -25,7 +25,7 @@
  **/
 
 module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button,
-		output red_led, output blue_led, output green_led, output yellow_led, input reset);
+		output red_led, output blue_led, output green_led, output yellow_led, input reset, output audioOut, output audioEn);
 	wire clock;
 
 	wire rwe, mwe;
@@ -41,7 +41,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	clk_wiz_0 pll(.clk_out1(clk_50mhz), .reset(1'b0), .locked(locked), .clk_in1(clk_100mhz));
 
 	// ADD YOUR MEMORY FILE HERE
-	localparam INSTR_FILE = "delays";
+	localparam INSTR_FILE = "audio";
 	
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 
@@ -91,6 +91,12 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	assign flash_led = (mwe == 1'b1) & (memAddr[11:0] == 12'd6);
 	// memDataIn[1:0] cases: 00=flash red, 01=flash blue, 10=flash green, 11=flash yellow
 	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
+
+	// if sw to address 8, play audio
+	wire play_audio;
+	assign play_audio = (mwe == 1'b1) & (memAddr[11:0] == 12'd8);
+	// memDataIn[1:0] cases: 00=red sound, 01=blue, 10=green, 11=yellow
+	make_sound audio(.clock(clock), .play_audio(play_audio), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .audioEn(audioEn), .audioOut(audioOut));
 
 	wire [31:0] button_out;
 	wire poll_button;
