@@ -41,7 +41,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	clk_wiz_0 pll(.clk_out1(clk_50mhz), .reset(1'b0), .locked(locked), .clk_in1(clk_100mhz));
 
 	// ADD YOUR MEMORY FILE HERE
-	localparam INSTR_FILE = "servo";
+	localparam INSTR_FILE = "audio";
 	
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 
@@ -110,11 +110,6 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	//000 goes nowhere, 001 forward, 010 backwards , 011 turn left, 100 turns right;
 	wire useServo;
 	assign useServo = (mwe == 1'b1) & (memAddr[11:0] == 12'd9);
-	ServoController Servo(.clk(clock), .clk_100mhz(clk_100mhz), .useServo(useServo), .direction(memDataIn[2:0]), .left_servo(left_servo), .right_servo(right_servo));
-
-	// TO DO: in mips, write thing that checks button presses, and turns on the led w button press
-	// in mips -> I will just shift the number myself to only get the two lsb (colors) or msb however i code this
-	// in verilog -> writing button_press 
-	// check if lw called -> then turn was_read = 1, 
+	ServoController servo(.clk(clock), .useServo(useServo), .direction(memDataIn[2:0]), .left_servo(left_servo), .right_servo(right_servo)); 
 
 endmodule
