@@ -18,13 +18,13 @@ module ServoController(clk, useServo, direction, left_servo, right_servo);
     // higher is CCW > 2.75%  (5%) -> 50
     // lower is CW < 2.75% (0.50%) -> 6
     // for left wheel JC
-    // 73 gives duty cycle of 7.3% = no movement
+    // 73 gives duty cycle of 7.255% = no movement
     // higher is CCW > 7.3%  (9.5%) -> 95
     // lower is CW < 7.3% (5.1%) -> 51
     always @ (posedge clk) begin 
         case (direction_reg) 
             3'b000: begin
-                duty_cycle_left = 10'd73;
+                duty_cycle_left = 10'd74;
                 duty_cycle_right = 10'd28;
             end
             3'b001: begin
@@ -44,7 +44,7 @@ module ServoController(clk, useServo, direction, left_servo, right_servo);
                 duty_cycle_right = 10'd28;
             end
             default: begin
-                duty_cycle_left = 10'd73;
+                duty_cycle_left = 10'd74;
                 duty_cycle_right = 10'd28;
             end
         endcase

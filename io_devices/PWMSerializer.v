@@ -8,7 +8,7 @@ module PWMSerializer #(
     parameter 
     // Parameters in nanoseconds
     PERIOD_WIDTH_NS = 1000,  // Total width of the period in nanoseconds
-    SYS_FREQ_MHZ   = 100     // Base FPGA Clock in MHz; Nexys A7 uses a 100 MHz Clock
+    SYS_FREQ_MHZ   = 50     // Base FPGA Clock in MHz; Nexys A7 uses a 100 MHz Clock
     )(
     input clk,              // System Clock
     input reset,            // Reset the counter
