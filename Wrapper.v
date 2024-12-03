@@ -24,8 +24,8 @@
  *
  **/
 
-module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button,
-		output red_led, output blue_led, output green_led, output yellow_led, input reset, output audioOut, output audioEn);
+module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button, 
+		output red_led, output blue_led, output green_led, output yellow_led, input reset, output audioOut, output audioEn, output left_servo, output right_servo);
 	wire clock;
 
 	wire rwe, mwe;
@@ -41,7 +41,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	clk_wiz_0 pll(.clk_out1(clk_50mhz), .reset(1'b0), .locked(locked), .clk_in1(clk_100mhz));
 
 	// ADD YOUR MEMORY FILE HERE
-	localparam INSTR_FILE = "audio";
+	localparam INSTR_FILE = "servo";
 	
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 
@@ -105,6 +105,12 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	assign memDataOut = (memAddr[11:0] == 12'd7) ? button_out : memData_temp1;
 	// only assign memdataout to the actual color, and only if there was a button press?
 	button_press press(red_button, yellow_button, blue_button, green_button, clock, poll_button, button_out);
+
+	// sw to address 9 is useServo = 1
+	//000 goes nowhere, 001 forward, 010 backwards , 011 turn left, 100 turns right;
+	wire useServo;
+	assign useServo = (mwe == 1'b1) & (memAddr[11:0] == 12'd9);
+	ServoController Servo(.clk(clock), .useServo(useServo), .direction(memDataIn[2:0]), .left_servo(left_servo), .right_servo(right_servo));
 
 	// TO DO: in mips, write thing that checks button presses, and turns on the led w button press
 	// in mips -> I will just shift the number myself to only get the two lsb (colors) or msb however i code this
