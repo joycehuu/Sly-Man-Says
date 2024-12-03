@@ -1,5 +1,6 @@
 module ServoController(
     input        clk, 		     // System Clock Input 100 Mhz
+    input        clk_100mhz,
     input        useServo,        // tells us that we want to use the servos
     input       [2:0] direction, // 000 goes nowhere, 001 forward, 010 backwards , 011 turn left, 100 turns right;
     output left_servo,
@@ -45,7 +46,7 @@ module ServoController(
 
     // 20 ms period = 20,000,000 ns
     // 100 mhz clk
-    PWMSerializer #(20000000, 100) left(clk, 1'b0, duty_cycle_left, left_servo);
-    PWMSerializer #(20000000, 100) right(clk, 1'b0, duty_cycle_right, right_servo);
+    PWMSerializer #(20000000, 100) left(clk_100mhz, 1'b0, duty_cycle_left, left_servo);
+    PWMSerializer #(20000000, 100) right(clk_100mhz, 1'b0, duty_cycle_right, right_servo);
     
 endmodule

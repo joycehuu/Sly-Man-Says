@@ -110,7 +110,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	//000 goes nowhere, 001 forward, 010 backwards , 011 turn left, 100 turns right;
 	wire useServo;
 	assign useServo = (mwe == 1'b1) & (memAddr[11:0] == 12'd9);
-	ServoController Servo(.clk(clock), .useServo(useServo), .direction(memDataIn[2:0]), .left_servo(left_servo), .right_servo(right_servo));
+	ServoController Servo(.clk(clock), .clk_100mhz(clk_100mhz), .useServo(useServo), .direction(memDataIn[2:0]), .left_servo(left_servo), .right_servo(right_servo));
 
 	// TO DO: in mips, write thing that checks button presses, and turns on the led w button press
 	// in mips -> I will just shift the number myself to only get the two lsb (colors) or msb however i code this

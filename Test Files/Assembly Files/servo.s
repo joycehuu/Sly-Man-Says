@@ -3,15 +3,26 @@ addi $t1, $r0, 1
 addi $t2, $r0, 2
 addi $t3, $r0, 3
 addi $t4, $r0, 4
-loop:
-sw $t1, 9($r0)
-jal delay
-sw $t2, 9($r0)
-jal delay
-sw $t3, 9($r0)
-jal delay
-sw $t4, 9($r0)
-j loop
+
+_loop:
+    sw $t1, 9($r0)
+    jal delay
+    sw $t0, 9($r0)
+    jal delay
+    sw $t2, 9($r0)
+    jal delay
+    sw $t0, 9($r0)
+    jal delay
+    sw $t3, 9($r0)
+    jal delay
+    sw $t0, 9($r0)
+    jal delay
+    sw $t4, 9($r0)
+    jal delay
+    sw $t0, 9($r0)
+    jal delay
+    j _loop
+
 delay:
     # $t6 = 1, $t7 = 2^22
     addi $t6, $r0, 1
