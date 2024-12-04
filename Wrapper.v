@@ -25,7 +25,9 @@
  **/
 
 module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button, 
-		output red_led, output blue_led, output green_led, output yellow_led, input reset, output audioOut, output audioEn, output left_servo, output right_servo);
+		output red_led, output blue_led, output green_led, output yellow_led, input reset, output audioOut, output audioEn, output left_servo, output right_servo,
+		output cathode_1, output cathode_2, output cathode_3, output top, output top_right, output bot_right, output bot, output bot_left, output top_left, output middle);
+
 	wire clock;
 
 	wire rwe, mwe;
@@ -111,5 +113,10 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	wire useServo;
 	assign useServo = (mwe == 1'b1) & (memAddr[11:0] == 12'd9);
 	ServoController servo(.clk(clock), .useServo(useServo), .direction(memDataIn[2:0]), .left_servo(left_servo), .right_servo(right_servo)); 
+
+	// sw to address 10 is for displaying value to 7 seg
+	wire change_score;
+	assign change_score = (mwe == 1'b1) & (memAddr[11:0] == 12'd10);
+	score display_score(clock, change_score, number, cathode_1, cathode_2, cathode_3, top, top_right, bot_right, bot, bot_left, top_left, middle);
 
 endmodule
