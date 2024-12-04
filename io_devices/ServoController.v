@@ -24,7 +24,7 @@ module ServoController(clk, useServo, direction, left_servo, right_servo);
     always @ (posedge clk) begin 
         case (direction_reg) 
             3'b000: begin
-                duty_cycle_left = 10'd74;
+                duty_cycle_left = 10'd75;
                 duty_cycle_right = 10'd28;
             end
             3'b001: begin
@@ -44,7 +44,7 @@ module ServoController(clk, useServo, direction, left_servo, right_servo);
                 duty_cycle_right = 10'd28;
             end
             default: begin
-                duty_cycle_left = 10'd74;
+                duty_cycle_left = 10'd75;
                 duty_cycle_right = 10'd28;
             end
         endcase

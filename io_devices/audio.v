@@ -15,18 +15,23 @@ module audio(clock, play_audio, color, on_off, audioEn, audioOut);
     end
 
     localparam MHz = 1000000;
-	localparam SYSTEM_FREQ = 100*MHz; // System clock frequency
+	localparam SYSTEM_FREQ = 50*MHz; // System clock frequency
  
 	assign audioEn = onoff_reg;  // Enable Audio Output
 
 	// Initialize the frequency array. FREQs[0] = 261
 	reg[10:0] FREQs[0:3];
 	initial begin
-		$readmemh("FREQs.mem", FREQs);
+        $readmemh("FREQs.mem", FREQs);
+        // assign FREQs[0] = 25000000 / 261;
+        // assign FREQs[1] = 25000000 / 500;  
+        // assign FREQs[2] = 25000000 / 700;
+        // assign FREQs[3] = 25000000 / 880;
 	end
 
 	wire[17:0] CounterLimit; 
 	assign CounterLimit = SYSTEM_FREQ/(FREQs[color_reg]<<1) - 1;
+	//assign CounterLimit = FREQs[color_reg];
 
 	reg clk1MHz = 0;
 	reg[17:0] counter = 0;
