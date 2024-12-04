@@ -117,6 +117,6 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	// sw to address 10 is for displaying value to 7 seg
 	wire change_score;
 	assign change_score = (mwe == 1'b1) & (memAddr[11:0] == 12'd10);
-	score display_score(clock, change_score, number, cathode_1, cathode_2, cathode_3, top, top_right, bot_right, bot, bot_left, top_left, middle);
+	score display_score(clock, change_score, memDataIn[9:0], cathode_1, cathode_2, cathode_3, top, top_right, bot_right, bot, bot_left, top_left, middle);
 
 endmodule
