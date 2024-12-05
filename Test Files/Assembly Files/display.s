@@ -1,5 +1,9 @@
 _loop:
-addi $t1, $r0, 1
+addi $t1, $r0, 15
+sw $t1, 10($r0)
+jal delay
+
+addi $t1, $r0, 2
 sw $t1, 10($r0)
 jal delay
 j _loop
