@@ -86,57 +86,61 @@ _end_game:
     nop
 
     # turn on all leds
-    addi $t0, $r0, 1
-    sw $t0, 6($r0)
-    nop
-    nop
-    addi $t1, $r0, 3
-    sw $t1, 6($r0)
-    nop
-    nop
-    addi $t2, $r0, 5
-    sw $t2, 6($r0)
-    nop
-    nop
-    addi $t3, $r0, 7
-    sw $t3, 6($r0)
-    nop
-    nop
+    # addi $t0, $r0, 1
+    # sw $t0, 6($r0)
+    # addi $t1, $r0, 3
+    # sw $t1, 6($r0)
+    # addi $t2, $r0, 5
+    # sw $t2, 6($r0)
+    # addi $t3, $r0, 7
+    # sw $t3, 6($r0)
 
     # play audio
     addi $t0, $r0, 9
     sw $t0, 8($r0)
 
-    # long delay
-    addi $a0, $s7, 0
+    # flash $t5 = the correct color they were supposed to press
+    sll $t0, $t5, 1
+    addi $t0, $t0, 1
+    # flash new LED (turn on and then delay and then turn off)
+    sw $t0, 6($r0)
+    # short delay
+    addi $a0, $s6, 0
+    jal delay
+    addi $t0, $t0, -1
+    sw $t0, 6($r0)
+    # short delay
+    addi $a0, $s6, 0
+    jal delay
+
+    # turn on
+    addi $t0, $t0, 1
+    sw $t0, 6($r0)
+    # short delay
+    addi $a0, $s6, 0
+    jal delay
+
+    addi $t0, $t0, -1
+    sw $t0, 6($r0)
+    # short delay
+    addi $a0, $s6, 0
     jal delay
 
     # turn off all LEDs
-    addi $t0, $r0, 0
-    sw $t0, 6($r0)
-    nop
-    nop
-    addi $t0, $r0, 2
-    sw $t0, 6($r0)
-    nop
-    nop
-    addi $t0, $r0, 4
-    sw $t0, 6($r0)
-    nop
-    nop
-    addi $t0, $r0, 6
-    sw $t0, 6($r0)
-    nop
-    nop
+    # addi $t0, $r0, 0
+    # sw $t0, 6($r0)
+    # nop
+    # nop
+    # addi $t0, $r0, 2
+    # sw $t0, 6($r0)
+    # addi $t0, $r0, 4
+    # sw $t0, 6($r0)
+    # addi $t0, $r0, 6
+    # sw $t0, 6($r0)
+
     # turn off audio
     addi $t0, $r0, 8
     sw $t0, 8($r0)
-
-    # addi $t1, $r0, 6
-    # $s1 = the color of button pressed
-    # and $s1, $t1, $t5
-    # sra $s1, $s1, 1
-    # addi $a0, $s1, 0
 
     j _do_nothing
 
