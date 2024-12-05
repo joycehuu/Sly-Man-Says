@@ -78,44 +78,7 @@ _led_sequence:
 _end_game:
     nop
     nop
-
-    # turn on all leds
-    addi $t0, $r0, 1
-    sw $t0, 6($r0)
-    addi $t1, $r0, 3
-    sw $t1, 6($r0)
-    addi $t2, $r0, 5
-    sw $t2, 6($r0)
-    addi $t3, $r0, 7
-    sw $t3, 6($r0)
-
-    # play audio
-    addi $t0, $r0, 9
-    sw $t0, 8($r0)
-
-    # long delay
-    addi $a0, $s7, 0
-    jal delay
-
-    # turn off all LEDs
-    addi $t0, $r0, 0
-    sw $t0, 6($r0)
-    addi $t0, $r0, 2
-    sw $t0, 6($r0)
-    addi $t0, $r0, 4
-    sw $t0, 6($r0)
-    addi $t0, $r0, 6
-    sw $t0, 6($r0)
-    # turn off audio
-    addi $t0, $r0, 8
-    sw $t0, 8($r0)
-
-    j _do_nothing
-
-_do_nothing:
-    nop 
-    nop
-    j _do_nothing
+    j _end_game
 
 check_buttons:
     # passed into the argument register is where the end of the sequence is in memory

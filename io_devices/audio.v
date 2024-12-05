@@ -1,9 +1,9 @@
 module audio(clock, play_audio, color, on_off, audioEn, audioOut);
     input clock, play_audio, on_off;
-    input [1:0] color;
+    input [2:0] color;
     output audioEn, audioOut;
 
-    reg[1:0] color_reg; 
+    reg[2:0] color_reg; 
     reg onoff_reg;
     wire [3:0] assign_colors;
 
@@ -20,7 +20,7 @@ module audio(clock, play_audio, color, on_off, audioEn, audioOut);
 	assign audioEn = onoff_reg;  // Enable Audio Output
 
 	// Initialize the frequency array. FREQs[0] = 261
-	reg[10:0] FREQs[0:3];
+	reg[10:0] FREQs[0:4];
 	initial begin
         $readmemh("FREQs.mem", FREQs);
         // assign FREQs[0] = 25000000 / 261;

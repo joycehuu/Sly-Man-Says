@@ -98,7 +98,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	wire play_audio;
 	assign play_audio = (mwe == 1'b1) & (memAddr[11:0] == 12'd8);
 	// memDataIn[1:0] cases: 00=red sound, 01=blue, 10=green, 11=yellow
-	audio make_sound(.clock(clock), .play_audio(play_audio), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .audioEn(audioEn), .audioOut(audioOut));
+	audio make_sound(.clock(clock), .play_audio(play_audio), .color(memDataIn[3:1]), .on_off(memDataIn[0]), .audioEn(audioEn), .audioOut(audioOut));
 
 	wire [31:0] button_out;
 	wire poll_button;
