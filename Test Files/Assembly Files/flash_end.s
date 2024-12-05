@@ -19,8 +19,9 @@ addi $sp, $sp, 10000
 
 # at the beginning flash all LEDs and play all noises 
 addi $s0, $r0, 7
+addi $t0, $r0, 1
 _flash_all:
-    blt $s0, $r0, _led_sequence
+    blt $s0, $t0 _exit_beg
     # flash red
     sw $s0, 6($r0)
     # play audio
@@ -39,6 +40,11 @@ _flash_all:
     # move to next color
     addi $s0, $s0, -1
     j _flash_all
+
+_exit_beg: 
+    # short delay
+    addi $a0, $s6, 0
+    jal delay
 
 _led_sequence:
     # get random num
@@ -82,12 +88,12 @@ _end_game:
     # turn on all leds
     addi $t0, $r0, 1
     sw $t0, 6($r0)
-    addi $t1, $r0, 3
-    sw $t1, 6($r0)
-    addi $t2, $r0, 5
-    sw $t2, 6($r0)
-    addi $t3, $r0, 7
-    sw $t3, 6($r0)
+    addi $t0, $r0, 3
+    sw $t0, 6($r0)
+    addi $t0, $r0, 5
+    sw $t0, 6($r0)
+    addi $t0, $r0, 7
+    sw $t0, 6($r0)
 
     # play audio
     addi $t0, $r0, 9
@@ -109,6 +115,13 @@ _end_game:
     # turn off audio
     addi $t0, $r0, 8
     sw $t0, 8($r0)
+
+    addi $t1, $r0, 6
+    # $s1 = the color of button pressed
+    and $s1, $t1, $t5
+    sra $s1, $s1, 1
+    addi $a0, $s1, 0
+    jal flash_led
 
     j _do_nothing
 
