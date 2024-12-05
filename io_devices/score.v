@@ -6,6 +6,9 @@ module score(clock, change_score, number, anode_ones, anode_tens, top, top_right
     reg [3:0] tens, ones;  
     reg current_digit;          
     reg [3:0] digit_value; 
+    wire clock_div;
+    localparam CYCLE = 500000; // 500 kHz
+    reg[32:0] counter;
 
     // Splitting the number into each digit
     always @(posedge clock) begin
@@ -14,27 +17,45 @@ module score(clock, change_score, number, anode_ones, anode_tens, top, top_right
             ones <= number % 10;        
         end
     end
-
-    // which digit to turn on
+    
     always @(posedge clock) begin
+        if (counter > CYCLE)
+            counter <= 0;
+        else
+            counter <= counter + 1;
+    end
+    
+    assign clock_div = counter >= (CYCLE >> 1) ? 1'b1 : 1'b0;
+    
+    // which digit to turn on
+    always @(posedge clock_div) begin
         // Cycle through digits
         current_digit <= current_digit + 1; 
         case (current_digit)
             2'b0: begin
-                anode_ones <= 1'b0;  
-                anode_tens <= 1'b1;
-                digit_value <= ones;
-            end
-            2'b1: begin
                 anode_ones <= 1'b1;  
                 anode_tens <= 1'b0;
-                digit_value <= tens;
+                digit_value <= ones;
+            end 
+            2'b1: begin
+                anode_ones <= 1'b0;  
+                anode_tens <= 1'b1;
+                digit_value <= 10;
+//                if (tens == 0) begin
+//                    anode_ones <= 1'b0;  
+//                    anode_tens <= 1'b1;
+//                    digit_value <= tens;
+//                end else begin
+//                    anode_ones <= 1'b0;  
+//                    anode_tens <= 1'b1;
+//                    digit_value <= 10;
+//                end
             end
         endcase
     end
 
     // 7 seg decoding
-    always @(posedge clock) begin
+    always @(posedge clock_div) begin
         case (digit_value)
             4'd0: {top, top_right, bot_right, bot, bot_left, top_left, middle} <= 7'b1111110;
             4'd1: {top, top_right, bot_right, bot, bot_left, top_left, middle} <= 7'b0110000;
