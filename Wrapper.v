@@ -123,8 +123,9 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	always @(posedge clock) begin
 	   if(change_score)
 	       LED_reg[7:0] <= memDataIn[7:0];
-   end
-   assign LED[7:0] = LED_reg;
+    end
+    assign LED[7:0] = LED_reg;
+    
 	//score display_score(clock,  1'b1, 7'd27, anode_ones, anode_tens, top, top_right, bot_right, bot, bot_left, top_left, middle);
     //assign {top, top_right, bot_right, bot, bot_left, top_left, middle} = switches;
     //assign anode_ones = 1'b0; 

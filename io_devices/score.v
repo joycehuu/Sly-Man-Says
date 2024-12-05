@@ -40,15 +40,15 @@ module score(clock, change_score, number, anode_ones, anode_tens, top, top_right
             2'b1: begin
                 anode_ones <= 1'b0;  
                 anode_tens <= 1'b1;
-                digit_value <= 10;
+                digit_value <= tens;
 //                if (tens == 0) begin
 //                    anode_ones <= 1'b0;  
 //                    anode_tens <= 1'b1;
-//                    digit_value <= tens;
+//                    digit_value <= 10;
 //                end else begin
 //                    anode_ones <= 1'b0;  
 //                    anode_tens <= 1'b1;
-//                    digit_value <= 10;
+//                    digit_value <= tens;
 //                end
             end
         endcase
