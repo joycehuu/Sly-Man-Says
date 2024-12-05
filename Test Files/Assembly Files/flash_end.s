@@ -18,27 +18,27 @@ addi $s0, $r0, 20
 addi $sp, $sp, 10000
 
 # at the beginning flash all LEDs and play all noises 
-addi $s0, $r0, 7
+addi $t1, $r0, 7
 addi $t0, $r0, 1
 _flash_all:
-    blt $s0, $t0 _exit_beg
+    blt $t1, $t0 _exit_beg
     # flash red
-    sw $s0, 6($r0)
+    sw $t1, 6($r0)
     # play audio
-    sw $s0, 8($r0)
+    sw $t1, 8($r0)
 
     # short delay
     addi $a0, $s6, 0
     jal delay
 
     # turn led off
-    addi $s0, $s0, -1
-    sw $s0, 6($r0)
+    addi $t1, $t1, -1
+    sw $t1, 6($r0)
     # play audio
-    sw $s0, 8($r0)
+    sw $t1, 8($r0)
 
     # move to next color
-    addi $s0, $s0, -1
+    addi $t1, $t1, -1
     j _flash_all
 
 _exit_beg: 
