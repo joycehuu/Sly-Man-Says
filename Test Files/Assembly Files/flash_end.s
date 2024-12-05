@@ -88,12 +88,20 @@ _end_game:
     # turn on all leds
     addi $t0, $r0, 1
     sw $t0, 6($r0)
-    addi $t0, $r0, 3
-    sw $t0, 6($r0)
-    addi $t0, $r0, 5
-    sw $t0, 6($r0)
-    addi $t0, $r0, 7
-    sw $t0, 6($r0)
+    nop
+    nop
+    addi $t1, $r0, 3
+    sw $t1, 6($r0)
+    nop
+    nop
+    addi $t2, $r0, 5
+    sw $t2, 6($r0)
+    nop
+    nop
+    addi $t3, $r0, 7
+    sw $t3, 6($r0)
+    nop
+    nop
 
     # play audio
     addi $t0, $r0, 9
@@ -106,22 +114,29 @@ _end_game:
     # turn off all LEDs
     addi $t0, $r0, 0
     sw $t0, 6($r0)
+    nop
+    nop
     addi $t0, $r0, 2
     sw $t0, 6($r0)
+    nop
+    nop
     addi $t0, $r0, 4
     sw $t0, 6($r0)
+    nop
+    nop
     addi $t0, $r0, 6
     sw $t0, 6($r0)
+    nop
+    nop
     # turn off audio
     addi $t0, $r0, 8
     sw $t0, 8($r0)
 
-    addi $t1, $r0, 6
+    # addi $t1, $r0, 6
     # $s1 = the color of button pressed
-    and $s1, $t1, $t5
-    sra $s1, $s1, 1
-    addi $a0, $s1, 0
-    jal flash_led
+    # and $s1, $t1, $t5
+    # sra $s1, $s1, 1
+    # addi $a0, $s1, 0
 
     j _do_nothing
 
