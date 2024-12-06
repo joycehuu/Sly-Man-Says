@@ -86,6 +86,8 @@ _led_sequence:
         # $v0 != 0 means user messed up and end game
         bne $v0, $r0, _end_game
         # otherwise keep continuing the sequence
+        # increase score
+        addi $s5, $s5, 1
         j _led_sequence
 
 _end_game:
