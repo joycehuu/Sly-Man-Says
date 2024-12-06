@@ -1,10 +1,13 @@
-# r10 = user score
+# s5 = user score
 # start of sequence stored in address 20 in memory
 
 # IO Addresses:
 # lw to address 5 = get random number
 # sw to address 6 = flash LED 
 # lw to address 7 = check for button presses
+# sw to address 8 = audio
+# sw to address 9 = motors
+# sw to address 10 = 7 seg display
 
 main_loop:
 # in $s7 will be long delay value, $s6 = short delay value
@@ -85,9 +88,13 @@ _led_sequence:
         jal check_buttons
         # $v0 != 0 means user messed up and end game
         bne $v0, $r0, _end_game
+        nop
+        nop
         # otherwise keep continuing the sequence
         # increase score
         addi $s5, $s5, 1
+        nop
+        nop
         j _led_sequence
 
 _end_game:

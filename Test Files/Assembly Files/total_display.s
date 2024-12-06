@@ -5,6 +5,9 @@
 # lw to address 5 = get random number
 # sw to address 6 = flash LED 
 # lw to address 7 = check for button presses
+# sw to address 8 = audio
+# sw to address 9 = motors
+# sw to address 10 = 7 seg display
 
 main_loop:
 # in $s7 will be long delay value, $s6 = short delay value
