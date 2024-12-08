@@ -14,10 +14,7 @@ main_loop:
 addi $t0, $r0, 1
 sll $s7, $t0, 22
 addi $t0, $r0, 1
-sll $s6, $t0, 21    
-
-# initialize score to 0
-addi $s5, $r0, 0
+sll $s6, $t0, 21
 
 # sequence starts at address 20, $s0 = the next empty space in memory where new color should be stored
 addi $s0, $r0, 20
@@ -26,6 +23,10 @@ addi $sp, $sp, 10000
 # at the beginning flash all LEDs and play all noises 
 addi $t1, $r0, 7
 addi $t0, $r0, 1
+
+# initialize score to 0
+addi $s5, $r0, 0
+
 _flash_all:
     blt $t1, $t0 _exit_beg
     # flash red
@@ -58,9 +59,15 @@ _led_sequence:
 
     # move motors after round 3
     addi $t0, $r0, 4
+    nop
+    nop
     blt $s5, $t0, _continue
+    nop
+    nop
     # get random num to do rando movement (50% chance of something?)
     lw $t1, 5($r0)
+    nop
+    nop
     sw $t1, 9($r0)
 
     _continue:
@@ -107,6 +114,11 @@ _led_sequence:
 _end_game:
     nop
     nop
+    # turn off servos
+    addi $t1, $r0, 0
+    nop
+    nop
+    sw $t1, 9($r0)
 
     # turn on all leds
     # addi $t0, $r0, 1
@@ -184,11 +196,18 @@ check_buttons:
 
     # move motors after round 3
     addi $t0, $r0, 4
-    blt $s5, $t0, _continue
+    nop
+    nop
+    blt $s5, $t0, _continue2
+    nop
+    nop
     # get random num to do rando movement (50% chance of something?)
     lw $t1, 5($r0)
+    nop
+    nop
     sw $t1, 9($r0)
 
+    _continue2:
     # $s0 = where we are in the sequence
     # $s2 = end of sequence
     addi $s0, $r0, 20
