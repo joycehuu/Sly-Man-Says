@@ -260,7 +260,8 @@ check_buttons:
 
         # delay bc button press issues
         # short delay
-        addi $a0, $s6, 0
+        addi $a0, $r0, 1
+        sll $a0, $a0, 19
         jal delay
 
         # keep waiting for button press if we haven't reached end of sequence

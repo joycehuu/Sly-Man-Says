@@ -6,7 +6,7 @@ module lfsr(clk, reset, random_num);
     reg [31:0] random_num = 32'hB4BCD35C;
     wire bottom_bit;
 
-    assign bottom_bit = random_num[31] ^ random_num[19] ^ random_num[3];
+    assign bottom_bit = random_num[31] ^ random_num[21] ^ random_num[1] ^ random_num[0] ^ 1'b1;
 
     always @(posedge clk) begin
         random_num <= {random_num[30:0], bottom_bit};
