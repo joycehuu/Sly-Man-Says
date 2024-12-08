@@ -62,7 +62,7 @@ _exit_beg:
     # TO DO: Turn on flashing
 
     # Check that user pressed a button
-    _wait_button_press:
+    _wait_beg:
         lw $t4, 7($r0)
         addi $t1, $r0, 1
         # getting the lsb and seeing if button pressed, 0 = no button press, 1 = pressed
@@ -70,7 +70,7 @@ _exit_beg:
         # start sequence if pressed any button
         bne $t3, $r0, _led_start
         # otherwise if lsb = 0, no button was pressed so keep waiting/looping
-        j _wait_button_press
+        j _wait_beg
 
 _led_start:
     nop
