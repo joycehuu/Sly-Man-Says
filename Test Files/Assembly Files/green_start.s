@@ -29,7 +29,7 @@ addi $s5, $r0, 0
 
 _flash_all:
     blt $t1, $t0 _exit_beg
-    # flash red
+    # flash color
     sw $t1, 6($r0)
     # play audio
     sw $t1, 8($r0)
@@ -41,7 +41,7 @@ _flash_all:
     # turn led off
     addi $t1, $t1, -1
     sw $t1, 6($r0)
-    # play audio
+    # turn off audio
     sw $t1, 8($r0)
 
     # move to next color
@@ -137,6 +137,7 @@ _led_sequence:
 _end_game:
     nop
     nop
+    # turn off servos
     addi $t1, $r0, 0
     nop
     nop
@@ -211,7 +212,6 @@ check_buttons:
     sw $s2, 2($sp)
     sw $ra, 3($sp)
 
-    _continue2:
     # $s0 = where we are in the sequence
     # $s2 = end of sequence
     addi $s0, $r0, 20
@@ -243,6 +243,7 @@ check_buttons:
         nop
         nop
 
+        _continue2:
         addi $t1, $r0, 6
         # $s1 = the color of button pressed
         and $s1, $t1, $t4
@@ -301,7 +302,7 @@ flash_led:
     # turn led off
     addi $s0, $s0, -1
     sw $s0, 6($r0)
-    # play audio
+    # turn off audio
     sw $s0, 8($r0)
 
     lw $s0, 0($sp)
