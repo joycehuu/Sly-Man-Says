@@ -71,7 +71,7 @@ _exit_beg:
         bne $t3, $r0, _led_start
         # otherwise if lsb = 0, no button was pressed so keep waiting/looping
         j _wait_button_press
-        
+
 _led_start:
     nop
     # TO DO: turn off flashing
@@ -199,12 +199,7 @@ _end_game:
     addi $t0, $r0, 8
     sw $t0, 8($r0)
 
-    j _do_nothing
-
-_do_nothing:
-    nop 
-    nop
-    j _do_nothing
+    j _exit_beg
 
 check_buttons:
     # passed into the argument register is where the end of the sequence is in memory
