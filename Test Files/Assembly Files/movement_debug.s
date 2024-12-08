@@ -64,8 +64,8 @@ _led_sequence:
     blt $s5, $t0, _continue
     nop
     nop
-    # move forward
-    addi $t1, $r0, 1
+    # get random num to do rando movement (50% chance of something?)
+    lw $t1, 5($r0)
     nop
     nop
     sw $t1, 9($r0)
@@ -114,6 +114,10 @@ _led_sequence:
 _end_game:
     nop
     nop
+    addi $t1, $r0, 0
+    nop
+    nop
+    sw $t1, 9($r0)
 
     # turn on all leds
     # addi $t0, $r0, 1
@@ -189,19 +193,6 @@ check_buttons:
     sw $s2, 2($sp)
     sw $ra, 3($sp)
 
-    # move motors after round 3
-    addi $t0, $r0, 4
-    nop
-    nop
-    blt $s5, $t0, _continue2
-    nop
-    nop
-    # spinning circle?
-    addi $t1, $r0, 3
-    nop
-    nop
-    sw $t1, 9($r0)
-
     _continue2:
     # $s0 = where we are in the sequence
     # $s2 = end of sequence
@@ -219,6 +210,21 @@ check_buttons:
         j _wait_button_press
 
     _check_correct_button:
+        # move motors after round 3
+        addi $t0, $r0, 4
+        nop
+        nop
+        blt $s5, $t0, _continue2
+        nop
+        nop
+        # get random num to do rando movement (50% chance of something?)
+        lw $t1, 5($r0)
+        nop
+        nop
+        sw $t1, 9($r0)
+        nop
+        nop
+
         addi $t1, $r0, 6
         # $s1 = the color of button pressed
         and $s1, $t1, $t4

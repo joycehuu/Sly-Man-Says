@@ -53,6 +53,29 @@ _exit_beg:
     addi $a0, $s6, 0
     jal delay
 
+    # reseting everything to zero
+    # sequence starts at address 20, $s0 = the next empty space in memory where new color should be stored
+    addi $s0, $r0, 20
+    # initialize score to 0
+    addi $s5, $r0, 0
+
+    # TO DO: Turn on flashing
+
+    # Check that user pressed a button
+    _wait_button_press:
+        lw $t4, 7($r0)
+        addi $t1, $r0, 1
+        # getting the lsb and seeing if button pressed, 0 = no button press, 1 = pressed
+        and $t3, $t1, $t4
+        # start sequence if pressed any button
+        bne $t3, $r0, _led_start
+        # otherwise if lsb = 0, no button was pressed so keep waiting/looping
+        j _wait_button_press
+        
+_led_start:
+    nop
+    # TO DO: turn off flashing
+
 _led_sequence:
     # update score
     sw $s5, 10($r0)
@@ -64,8 +87,8 @@ _led_sequence:
     blt $s5, $t0, _continue
     nop
     nop
-    # move forward
-    addi $t1, $r0, 1
+    # get random num to do rando movement (50% chance of something?)
+    lw $t1, 5($r0)
     nop
     nop
     sw $t1, 9($r0)
@@ -114,6 +137,10 @@ _led_sequence:
 _end_game:
     nop
     nop
+    addi $t1, $r0, 0
+    nop
+    nop
+    sw $t1, 9($r0)
 
     # turn on all leds
     # addi $t0, $r0, 1
@@ -189,19 +216,6 @@ check_buttons:
     sw $s2, 2($sp)
     sw $ra, 3($sp)
 
-    # move motors after round 3
-    addi $t0, $r0, 4
-    nop
-    nop
-    blt $s5, $t0, _continue2
-    nop
-    nop
-    # spinning circle?
-    addi $t1, $r0, 3
-    nop
-    nop
-    sw $t1, 9($r0)
-
     _continue2:
     # $s0 = where we are in the sequence
     # $s2 = end of sequence
@@ -219,6 +233,21 @@ check_buttons:
         j _wait_button_press
 
     _check_correct_button:
+        # move motors after round 3
+        addi $t0, $r0, 4
+        nop
+        nop
+        blt $s5, $t0, _continue2
+        nop
+        nop
+        # get random num to do rando movement (50% chance of something?)
+        lw $t1, 5($r0)
+        nop
+        nop
+        sw $t1, 9($r0)
+        nop
+        nop
+
         addi $t1, $r0, 6
         # $s1 = the color of button pressed
         and $s1, $t1, $t4
