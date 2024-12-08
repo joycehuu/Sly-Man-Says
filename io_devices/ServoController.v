@@ -14,37 +14,37 @@ module ServoController(clk, useServo, direction, left_servo, right_servo);
     end
 
     // for right wheel JB
-    // 28 gives duty cycle of 2.75% = no movement
-    // higher is CCW > 2.75%  (5%) -> 50
-    // lower is CW < 2.75% (0.50%) -> 6
+    // 28 gives duty cycle of 2.75% = no movement -> 28
+    // higher is CCW > 2.75%  (5%) -> 34
+    // lower is CW < 2.75% (2.15%) -> 22
     // for left wheel JC
-    // 73 gives duty cycle of 7.255% = no movement
-    // higher is CCW > 7.3%  (9.5%) -> 95
-    // lower is CW < 7.3% (5.1%) -> 51
+    // 73 gives duty cycle of 7.255% = no movement -> 74
+    // higher is CCW > 7.3%  (9.5%) -> 80
+    // lower is CW < 7.3% (5.1%) -> 68
     always @ (posedge clk) begin 
         case (direction_reg) 
             3'b000: begin
-                duty_cycle_left = 10'd75;
+                duty_cycle_left = 10'd74;
                 duty_cycle_right = 10'd28;
             end
             3'b001: begin
-                duty_cycle_left = 10'd95;  // forwards
-                duty_cycle_right = 10'd6;
+                duty_cycle_left = 10'd80;  // forwards
+                duty_cycle_right = 10'd22;
             end
             3'b010: begin
-                duty_cycle_left = 10'd51;   // backwards
-                duty_cycle_right = 10'd50;
+                duty_cycle_left = 10'd68;   // backwards
+                duty_cycle_right = 10'd34;
             end
             3'b011: begin
-                duty_cycle_left = 10'd51;   // turn left
-                duty_cycle_right = 10'd28;
+                duty_cycle_left = 10'd80;   // turn left
+                duty_cycle_right = 10'd34;
             end
             3'b100: begin
-                duty_cycle_left = 10'd95;  // turn right
-                duty_cycle_right = 10'd28;
+                duty_cycle_left = 10'd68;  // turn right
+                duty_cycle_right = 10'd22;
             end
             default: begin
-                duty_cycle_left = 10'd75;
+                duty_cycle_left = 10'd74;
                 duty_cycle_right = 10'd28;
             end
         endcase
