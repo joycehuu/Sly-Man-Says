@@ -26,7 +26,8 @@
 
 module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button, 
 		output red_led, output blue_led, output green_led, output yellow_led, input reset, output audioOut, output audioEn, output left_servo, output right_servo,
-		output anode_ones, output anode_tens, output top, output top_right, output bot_right, output bot, output bot_left, output top_left, output middle, output [7:0] LED);
+		output anode_ones, output anode_tens, output top, output top_right, output bot_right, output bot, output bot_left, output top_left, output middle, output [7:0] LED,
+		output[1:0] AN, output CA, output CB, output CC, output CD, output CE, output CF, output CG);
 
 	wire clock;
 
@@ -43,7 +44,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	clk_wiz_0 pll(.clk_out1(clk_50mhz), .reset(1'b0), .locked(locked), .clk_in1(clk_100mhz));
 
 	// ADD YOUR MEMORY FILE HERE
-	localparam INSTR_FILE = "display";
+	localparam INSTR_FILE = "green_debug";
 	
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 
@@ -98,7 +99,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	wire play_audio;
 	assign play_audio = (mwe == 1'b1) & (memAddr[11:0] == 12'd8);
 	// memDataIn[1:0] cases: 00=red sound, 01=blue, 10=green, 11=yellow
-	audio make_sound(.clock(clock), .play_audio(play_audio), .color(memDataIn[3:1]), .on_off(memDataIn[0]), .audioEn(audioEn), .audioOut(audioOut));
+	 audio make_sound(.clock(clock), .play_audio(play_audio), .color(memDataIn[3:1]), .on_off(memDataIn[0]), .audioEn(audioEn), .audioOut(audioOut));
 
 	wire [31:0] button_out;
 	wire poll_button;
@@ -117,14 +118,14 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	// sw to address 10 is for displaying value to 7 seg
 	wire change_score;
 	assign change_score = (mwe == 1'b1) & (memAddr[11:0] == 12'd10);
-	//score display_score(clock, 1'b1, 7'd27, AN[0], AN[1], CA, CB, CC, CD, CE, CF, CG);
-	score display_score(clock, change_score, memDataIn[7:0], anode_ones, anode_tens, top, top_right, bot_right, bot, bot_left, top_left, middle);
 	reg [7:0] LED_reg;
 	always @(posedge clock) begin
 	   if(change_score)
 	       LED_reg[7:0] <= memDataIn[7:0];
     end
     assign LED[7:0] = LED_reg;
+	score display_score2(clock, change_score, memDataIn[7:0], AN[0], AN[1], CA, CB, CC, CD, CE, CF, CG);
+	score display_score(clock, change_score,  memDataIn[7:0], anode_ones, anode_tens, top, top_right, bot_right, bot, bot_left, top_left, middle);
     
 	//score display_score(clock,  1'b1, 7'd27, anode_ones, anode_tens, top, top_right, bot_right, bot, bot_left, top_left, middle);
     //assign {top, top_right, bot_right, bot, bot_left, top_left, middle} = switches;
