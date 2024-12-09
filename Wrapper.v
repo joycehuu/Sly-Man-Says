@@ -89,16 +89,31 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
     dffe_ref pulse_stall(.q(start_random_pulse), .d(reset), .clk(clock), .en(1'b1), .clr(1'b0));
 
 	// if sw to address 6, flash the led 
+	wire red_led_temp, blue_led_temp, green_led_temp, yellow_led_temp, red_led_all, blue_led_all, green_led_all, yellow_led_all;
 	wire flash_led;
 	assign flash_led = (mwe == 1'b1) & (memAddr[11:0] == 12'd6);
 	// memDataIn[1:0] cases: 00=flash red, 01=flash blue, 10=flash green, 11=flash yellow
-	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .red_led(red_led), .blue_led(blue_led), .green_led(green_led), .yellow_led(yellow_led));
+	light_up lights(.clock(clock), .flash_led(flash_led), .color(memDataIn[2:1]), .on_off(memDataIn[0]), .red_led(red_led_temp), .blue_led(blue_led_temp), .green_led(green_led_temp), .yellow_led(yellow_led_temp));
+
+	// sw to address 11, flash ALL LEDs (this is because the other light_up module uses a decoder and can only turn on one at once...)
+	wire flash_all;
+	assign flash_all = (mwe == 1'b1) & (memAddr[11:0] == 12'd11);
+	reg all_led_reg;
+	always @(posedge clock) begin
+	   if(flash_all)
+	       all_led_reg <= memDataIn[0];
+    end
+	assign red_led = all_led_reg ? red_led_all : red_led_temp; 
+	assign blue_led = all_led_reg ? blue_led_all : blue_led_temp; 
+	assign green_led = all_led_reg ? green_led_all : green_led_temp; 
+	assign yellow_led = all_led_reg ? yellow_led_all : yellow_led_temp; 
+	flash_all all_lights(.clock(clock), .red_led(red_led_all), .blue_led(blue_led_all), .green_led(green_led_all), .yellow_led(yellow_led_all));
 
 	// if sw to address 8, play audio
 	wire play_audio;
 	assign play_audio = (mwe == 1'b1) & (memAddr[11:0] == 12'd8);
 	// memDataIn[1:0] cases: 00=red sound, 01=blue, 10=green, 11=yellow
-	 audio make_sound(.clock(clock), .play_audio(play_audio), .color(memDataIn[3:1]), .on_off(memDataIn[0]), .audioEn(audioEn), .audioOut(audioOut));
+	audio make_sound(.clock(clock), .play_audio(play_audio), .color(memDataIn[3:1]), .on_off(memDataIn[0]), .audioEn(audioEn), .audioOut(audioOut));
 
 	wire [31:0] button_out;
 	wire poll_button;

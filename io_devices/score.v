@@ -9,8 +9,7 @@ module score(
     reg digit_toggle;  // Toggle between ones and tens
     reg [3:0] digit_value; 
     wire clock_div;
-    // localparam CYCLE = 500000; // 500 kHz for clock division
-    localparam CYCLE = 500000; // 350 kHz for clock division
+    localparam CYCLE = 500000; // 500 kHz for clock division
     reg [32:0] counter;
 
     // Splitting the number into tens and ones

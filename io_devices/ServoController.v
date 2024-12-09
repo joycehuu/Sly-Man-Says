@@ -43,6 +43,14 @@ module ServoController(clk, useServo, direction, left_servo, right_servo);
                 duty_cycle_left = 10'd66;  // turn right
                 duty_cycle_right = 10'd20;
             end
+            3'b101: begin
+                duty_cycle_left = 10'd86;  // forwards faster
+                duty_cycle_right = 10'd16;
+            end
+            3'b110: begin
+                duty_cycle_left = 10'd62;   // backwards faster
+                duty_cycle_right = 10'd40;
+            end
             default: begin
                 duty_cycle_left = 10'd75;
                 duty_cycle_right = 10'd28;
