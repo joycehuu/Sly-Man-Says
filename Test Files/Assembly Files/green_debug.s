@@ -24,8 +24,13 @@ addi $sp, $sp, 10000
 addi $t1, $r0, 7
 addi $t0, $r0, 1
 
+addi $s5, $r0, 10
+# update score
+sw $s5, 10($r0)
 # initialize score to 0
 addi $s5, $r0, 0
+# update score
+sw $s5, 10($r0)
 
 _flash_all:
     blt $t1, $t0 _exit_beg
