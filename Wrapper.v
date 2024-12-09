@@ -26,8 +26,7 @@
 
 module Wrapper (input clk_100mhz, input red_button, input blue_button, input green_button, input yellow_button, 
 		output red_led, output blue_led, output green_led, output yellow_led, input reset, output audioOut, output audioEn, output left_servo, output right_servo,
-		output anode_ones, output anode_tens, output top, output top_right, output bot_right, output bot, output bot_left, output top_left, output middle, output [7:0] LED,
-		output[1:0] AN, output CA, output CB, output CC, output CD, output CE, output CF, output CG);
+		output anode_ones, output anode_tens, output top, output top_right, output bot_right, output bot, output bot_left, output top_left, output middle, output [7:0] LED);
 
 	wire clock;
 
@@ -124,7 +123,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	       LED_reg[7:0] <= memDataIn[7:0];
     end
     assign LED[7:0] = LED_reg;
-	score display_score2(clock, change_score, memDataIn[7:0], AN[0], AN[1], CA, CB, CC, CD, CE, CF, CG);
+	// score display_score2(clock, 1'b1, memDataIn[7:0], AN[0], AN[1], CA, CB, CC, CD, CE, CF, CG);
 	score display_score(clock, change_score,  memDataIn[7:0], anode_ones, anode_tens, top, top_right, bot_right, bot, bot_left, top_left, middle);
     
 	//score display_score(clock,  1'b1, 7'd27, anode_ones, anode_tens, top, top_right, bot_right, bot, bot_left, top_left, middle);
