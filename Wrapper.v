@@ -43,7 +43,7 @@ module Wrapper (input clk_100mhz, input red_button, input blue_button, input gre
 	clk_wiz_0 pll(.clk_out1(clk_50mhz), .reset(1'b0), .locked(locked), .clk_in1(clk_100mhz));
 
 	// ADD YOUR MEMORY FILE HERE
-	localparam INSTR_FILE = "green_debug";
+	localparam INSTR_FILE = "final_simon";
 	
 	// Main Processing Unit
 	processor CPU(.clock(clock), .reset(reset), 
