@@ -15,12 +15,12 @@ module ServoController(clk, useServo, direction, left_servo, right_servo);
 
     // for JC
     // 28 gives duty cycle of 2.75% = no movement -> 28
-    // higher is CCW > 2.75%  (5%) -> 36
-    // lower is CW < 2.75% (2.15%) -> 20
+    // higher is CCW > 2.75%  (5%) -> 43
+    // lower is CW < 2.75% (2.15%) -> 13
     // for JB
-    // 73 gives duty cycle of 7.255% = no movement -> 74
-    // higher is CCW > 7.3%  (9.5%) -> 82
-    // lower is CW < 7.3% (5.1%) -> 66
+    // 73 gives duty cycle of 7.255% = no movement -> 75
+    // higher is CCW > 7.3%  (9.5%) -> 90
+    // lower is CW < 7.3% (5.1%) -> 60
     always @ (posedge clk) begin 
         case (direction_reg) 
             3'b000: begin
@@ -28,28 +28,28 @@ module ServoController(clk, useServo, direction, left_servo, right_servo);
                 duty_cycle_right = 10'd28;
             end
             3'b001: begin
-                duty_cycle_left = 10'd82;  // forwards
-                duty_cycle_right = 10'd20;
+                duty_cycle_left = 10'd90;  // forwards
+                duty_cycle_right = 10'd13;
             end
             3'b010: begin
-                duty_cycle_left = 10'd66;   // backwards
-                duty_cycle_right = 10'd36;
+                duty_cycle_left = 10'd43;   // backwards
+                duty_cycle_right = 10'd60;
             end
             3'b011: begin
-                duty_cycle_left = 10'd82;   // turn left
-                duty_cycle_right = 10'd36;
+                duty_cycle_left = 10'd90;  // forwards
+                duty_cycle_right = 10'd13;
             end
             3'b100: begin
-                duty_cycle_left = 10'd66;  // turn right
-                duty_cycle_right = 10'd20;
+                duty_cycle_left = 10'd43;   // backwards
+                duty_cycle_right = 10'd60;
             end
             3'b101: begin
-                duty_cycle_left = 10'd86;  // forwards faster
-                duty_cycle_right = 10'd16;
+                duty_cycle_left = 10'd90;  // forwards
+                duty_cycle_right = 10'd13;
             end
             3'b110: begin
-                duty_cycle_left = 10'd62;   // backwards faster
-                duty_cycle_right = 10'd40;
+                duty_cycle_left = 10'd43;   // backwards
+                duty_cycle_right = 10'd60;
             end
             default: begin
                 duty_cycle_left = 10'd75;
