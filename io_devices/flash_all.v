@@ -11,7 +11,7 @@ module flash_all(input clock, output red_led, output blue_led, output green_led,
     reg leds_on = 0;
 
     always @(posedge clock) begin
-        if (counter <= ONE_SECOND) begin
+        if (counter <= ONE_SECONDS) begin
             counter <= counter + 1;
             leds_on <= 1'b1; // turn on led
         end else if(counter <= SIX_SECONDS) begin
@@ -23,9 +23,18 @@ module flash_all(input clock, output red_led, output blue_led, output green_led,
     end
 
     // turn leds on or off
-    assign red_led = leds_on ? 1'b1 : 1'b0;
-    assign blue_led = leds_on ? 1'b1 : 1'b0;
-    assign yellow_led = leds_on ? 1'b1 : 1'b0;
-    assign green_led = leds_on ? 1'b1 : 1'b0;
+    always @(posedge clock) begin
+        if (leds_on) begin
+            red_led <= 1;
+            blue_led <= 1;
+            green_led <= 1;
+            yellow_led <= 1;
+        end else begin
+            red_led <= 0;
+            blue_led <= 0;
+            green_led <= 0;
+            yellow_led <= 0;
+        end
+    end
 
 endmodule
